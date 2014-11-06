@@ -53,8 +53,11 @@
                     <watchJettyServerPort>          ${cm.watchJettyServerPort}         </watchJettyServerPort>
                     <javaScriptIntegrationTestDir>  ${cm.javaScriptIntegrationTestDir> </javaScriptIntegrationTestDir>
                     <jsAggregationFiles>
-                        <!-- Auxilary libs-->
+                        <!-- Libs-->
                         <file>jquery.min.js</file>
+                        <!-- Init -->
+                        <file>core/handlers/clickHandlers.js</file>
+                        <file>init.js</file>
                     </jsAggregationFiles>
                 </configuration>
             </plugin>
