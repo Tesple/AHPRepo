@@ -55,9 +55,11 @@
                     <jsAggregationFiles>
                         <!-- Libs-->
                         <file>jquery.min.js</file>
+                        <file>Utils.js</file>
                         <!-- Init -->
+                        <file>Setup.js</file>
                         <file>core/handlers/clickHandlers.js</file>
-                        <file>init.js</file>
+                        <file>core/Init.js</file>
                     </jsAggregationFiles>
                 </configuration>
             </plugin>
