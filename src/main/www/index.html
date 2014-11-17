@@ -12,10 +12,22 @@
         <div class="splash">
             <h1 class="splash-head">SWD - AHP solver</h1>
             <h2 class="splash-subhead">Created with passion by Tomasz Piechaczek & Piotr Nippe</h2>
-            <p>
-                <a href="" class="pure-button button-primary" data-action="start">Free user</a>
-                <a href="" class="pure-button button-secondary" data-action="start">Admin</a>
+            <p id="splash-buttons-bar">
+                <a href="" class="pure-button pure-button-primary" data-action="free-user">Free user</a>
+                <a href="" class="pure-button pure-button-secondary" data-action="admin-user">Admin</a>
             </p>
+            <form id="admin-auth" class="pure-form">
+                <fieldset>
+                    <input type="text" placeholder="Login">
+                    <input type="password" placeholder="Password">
+                    <i class="fa fa-check-circle-o" data-action="auth"></i>
+                    <i class="fa fa-times-circle-o" data-action="cancel-auth"></i>
+                </fieldset>
+            </form>
+            <div id="auth-spinner">
+                <div class="spinner"></div>
+                <h3> AUTHORIZING </h3>
+            </div>
         </div>
     </div>
 </body>

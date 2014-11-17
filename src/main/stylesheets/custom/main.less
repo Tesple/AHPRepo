@@ -67,37 +67,49 @@ label {
  * I want my pure-button elements to look a little different
  */
 .pure-button {
-    background-color: #1f8dd6;
-    color: white;
-    padding: 0.5em 2em;
-    border-radius: 5px;
+   background-color: #1f8dd6;
+   color: white;
+   padding: 0.5em 2em;
+   border-radius: 0;
+ }
+
+a.pure-button-primary, a.pure-button-secondary {
+    background: white;
+    border: 2px solid #FFF;
+    font-size: 120%;
+    border-radius: 0;
 }
 
 a.pure-button-primary {
-    background: white;
-    color: #1f8dd6;
-    border-radius: 5px;
-    font-size: 120%;
+  color: #1f8dd6;
 }
 
-/*
- * -- SPLASH STYLES --
- * This is the blue top section that appears on the page.
- */
+a.pure-button-secondary {
+  background-color: #1CB841;
+  color: #FFF;
+}
+  /*
+   * -- SPLASH STYLES --
+   * This is the blue top section that appears on the page.
+   */
 
-.splash-container {
+  .splash-container {
     background: #1f8dd6;
     z-index: 1;
     overflow: hidden;
     /* The following styles are required for the "scroll-over" effect */
     width: 100%;
-    height: 88%;
+    height: 100%;
     top: 0;
     left: 0;
     position: fixed !important;
-}
+  }
 
-.splash {
+  .splash-container .splash .pure-button {
+    min-width: 200px;
+  }
+
+  .splash {
     /* absolute center .splash within .splash-container */
     width: 80%;
     height: 50%;
@@ -106,10 +118,42 @@ a.pure-button-primary {
     top: 100px; left: 0; bottom: 0; right: 0;
     text-align: center;
     text-transform: uppercase;
-}
 
-/* This is the main heading that appears on the blue section */
-.splash-head {
+    #admin-auth {
+      display: none;
+      input {
+        border-radius: 0;
+        width: calc(~"50% - 200px");
+        box-shadow: none;
+      }
+      .fa {
+        color: #fff;
+        font-size: 40px;
+        vertical-align: top;
+        transition: all 0.2s linear 0s;
+        cursor: pointer;
+        &:hover {
+          &.fa-check-circle-o {
+            color: #DDFFDD;
+          }
+          &.fa-times-circle-o {
+            color: #FFDDDD;
+          }
+        }
+      }
+
+    }
+    #auth-spinner {
+      display: none;
+
+      h3 {
+        color: #D2E8F7;
+      }
+    }
+  }
+
+  /* This is the main heading that appears on the blue section */
+  .splash-head {
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -118,20 +162,20 @@ a.pure-button-primary {
     font-weight: 100;
     border-radius: 5px;
     line-height: 1em;
-}
+  }
 
-/* This is the subheading that appears on the blue section */
-.splash-subhead {
+  /* This is the subheading that appears on the blue section */
+  .splash-subhead {
     color: white;
     letter-spacing: 0.05em;
     opacity: 0.8;
-}
+  }
 
-/*
- * -- CONTENT STYLES --
- * This represents the content area (everything below the blue section)
- */
-.content-wrapper {
+  /*
+   * -- CONTENT STYLES --
+   * This represents the content area (everything below the blue section)
+   */
+  .content-wrapper {
     /* These styles are required for the "scroll-over" effect */
     position: absolute;
     top: 87%;
@@ -140,65 +184,98 @@ a.pure-button-primary {
     z-index: 2;
     background: white;
 
-}
+  }
 
-/* This is the class used for the main content headers (<h2>) */
-.content-head {
+  /* This is the class used for the main content headers (<h2>) */
+  .content-head {
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin: 2em 0 1em;
-}
-/* This is the class used for the content sub-headers (<h3>) */
-.content-subhead {
+  }
+  /* This is the class used for the content sub-headers (<h3>) */
+  .content-subhead {
     color: #1f8dd6;
-}
-.content-subhead i {
+  }
+  .content-subhead i {
     margin-right: 7px;
-}
-/*
- * -- TABLET (AND UP) MEDIA QUERIES --
- * On tablets and other medium-sized devices, we want to customize some
- * of the mobile styles.
- */
-@media (min-width: 48em) {
+  }
+  /*
+   * -- TABLET (AND UP) MEDIA QUERIES --
+   * On tablets and other medium-sized devices, we want to customize some
+   * of the mobile styles.
+   */
+  @media (min-width: 48em) {
 
     /* We increase the body font size */
     body {
-        font-size: 16px;
+      font-size: 16px;
     }
     /* We want to give the content area some more padding */
     .content {
-        padding: 1em;
-        height: 100%;
+      padding: 1em;
+      height: 100%;
     }
     /* We decrease the width of the .splash, since we have more width
     to work with */
     .splash {
-        width: 50%;
-        height: 50%;
+      width: 50%;
+      height: 50%;
     }
 
     .splash-head {
-        font-size: 250%;
+      font-size: 250%;
     }
 
 
     /* We remove the border-separator assigned to .l-box-lrg */
     .l-box-lrg {
-        border: none;
+      border: none;
     }
 
-}
+  }
 
-/*
- * -- DESKTOP (AND UP) MEDIA QUERIES --
- * On desktops and other large devices, we want to over-ride some
- * of the mobile and tablet styles.
- */
-@media (min-width: 78em) {
+  /*
+   * -- DESKTOP (AND UP) MEDIA QUERIES --
+   * On desktops and other large devices, we want to over-ride some
+   * of the mobile and tablet styles.
+   */
+  @media (min-width: 78em) {
     /* We increase the header font size even more */
     .splash-head {
-        font-size: 300%;
+      font-size: 300%;
+    }
+  }
+
+
+
+/* LOADER */
+.spinner {
+  width: 80px;
+  height: 80px;
+  margin: 50px auto;
+  background-color: #FFF;
+
+  border-radius: 100%;
+  -webkit-animation: scaleout 1.0s infinite ease-in-out;
+  animation: scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes scaleout {
+  0% { -webkit-transform: scale(0.0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 100% {
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+      opacity: 0;
     }
 }
