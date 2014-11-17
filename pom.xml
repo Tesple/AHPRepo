@@ -56,9 +56,14 @@
                         <!-- Libs-->
                         <file>jquery.min.js</file>
                         <file>Utils.js</file>
-                        <!-- Init -->
+                        <!-- Setup -->
                         <file>Setup.js</file>
-                        <file>core/handlers/clickHandlers.js</file>
+                        <!-- Handlers -->
+                        <file>core/handlers/BasicClickHandlers.js</file>
+                        <!-- View Controllers -->
+                        <file>core/controllers/AdminViewController.js</file>
+                        <file>core/controllers/UserViewController.js</file>
+                        <!-- INIT -->
                         <file>core/Init.js</file>
                     </jsAggregationFiles>
                 </configuration>

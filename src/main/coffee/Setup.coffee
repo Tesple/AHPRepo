@@ -1,6 +1,7 @@
 window.app = {
   core: {
     handlers: {}
+    controllers: {}
   }
 }
 
