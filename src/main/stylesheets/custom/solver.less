@@ -1,0 +1,97 @@
+@import "../colors";
+@import "../mixins";
+
+.solver-container {
+  .select-step(1, @green);
+  .select-step(2, @olive);
+  .select-step(3, @violet);
+  .select-step(4, @red);
+  .select-step(5, @orange);
+
+  i.fa {
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity .2s linear;
+    &:hover {
+      opacity: .8;
+    }
+  }
+  background: @green;
+  border-top: 3px solid #FFF;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: calc(~"100% - 10px");
+  z-index: 34;
+  transition: all .2s linear;
+
+  .solver-menu {
+    border-bottom: 2px solid #FFF;
+    height: 87px;
+    width: calc(~"100% - 300px");
+    margin: 0 auto;
+    opacity: 0;
+    transition: opacity 1s linear;
+    color: #FFF;
+    font-size: 50px;
+    line-height: 86px;
+    text-align: center;
+
+    nav, i {
+      display: inline-block;
+    }
+
+    i {
+      line-height: unset;
+      &.fa-th {
+        font-size: 42px;
+        margin-top: 4px;
+      }
+    }
+
+    nav span {
+      border: 3px solid transparent;
+      display: inline-block;
+      font-size: 30px;
+      line-height: 40px;
+      margin-top: 20px;
+      overflow: hidden;
+      transition: all 0.2s linear 0s;
+      width: 130px;
+      color: #FFF;
+      cursor: pointer;
+      opacity: 0.5;
+      border-radius: 5px;
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+
+  .solver-inner{
+    display: inline-block;
+    color: #FFF;
+    position: absolute;
+    height: calc(~"100% - 110px");
+    width: calc(~"100% - 300px");
+    top: 100px;
+    left: 150px;
+
+    .solver-step {
+      display: none;
+      height: 100%;
+      overflow: auto;
+      .no-data-message {
+        font-size: 40px;
+        line-height: 200px;
+        text-align: center;
+      }
+    }
+  }
+
+  &.visible {
+    .solver-menu {
+      opacity: 1;
+    }
+  }
+}

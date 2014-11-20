@@ -1,0 +1,12 @@
+.select-step(@num, @color) {
+  &[data-selected="@{num}"] {
+    background: @color;
+    .solver-menu nav [data-step="@{num}"] {
+      border: 3px solid #FFF;
+      opacity: 1;
+    }
+    .solver-inner .solver-step[data-step="@{num}"] {
+      display: block;
+    }
+  }
+}
