@@ -13,20 +13,57 @@
             <h1 class="splash-head">SWD - AHP solver</h1>
             <h2 class="splash-subhead">Created with passion by Tomasz Piechaczek & Piotr Nippe</h2>
             <p id="splash-buttons-bar">
-                <a href="" class="pure-button pure-button-primary" data-action="free-user">Free user</a>
-                <a href="" class="pure-button pure-button-secondary" data-action="admin-user">Admin</a>
+                <a href="" class="pure-button pure-button-primary" data-action="init-solver" data-context="user">Free user</a>
+                <a href="" class="pure-button pure-button-secondary" data-action="admin-user" data-context="admin">Admin</a>
             </p>
             <form id="admin-auth" class="pure-form">
                 <fieldset>
                     <input type="text" placeholder="Login">
                     <input type="password" placeholder="Password">
-                    <i class="fa fa-check-circle-o" data-action="auth"></i>
-                    <i class="fa fa-times-circle-o" data-action="cancel-auth"></i>
+                    <i class="fa fa-check-circle-o" data-action="auth" data-context="admin"></i>
+                    <i class="fa fa-times-circle-o" data-action="cancel-auth" data-context="admin"></i>
                 </fieldset>
+                <p></p>
             </form>
             <div id="auth-spinner">
                 <div class="spinner"></div>
                 <h3> AUTHORIZING </h3>
+            </div>
+        </div>
+    </div>
+    <div class="solver-container">
+        <div class="solver-menu">
+            <i class="fa fa-th pull-left"></i>
+            <nav>
+                <span data-action="select-step" data-context="user" data-step="1">Criteria</span>
+                <span data-action="select-step" data-context="user" data-step="2">Options</span>
+                <span data-action="select-step" data-context="user" data-step="3">Preview</span>
+                <span data-action="select-step" data-context="user" data-step="4">Solve</span>
+                <span data-action="select-step" data-context="user" data-step="5">Report</span>
+            </nav>
+            <i class="fa fa-times pull-right" data-action="close-solver" data-context="user"></i>
+        </div>
+        <div class="solver-inner">
+            <div class="solver-step" data-step="1">
+                <form id="number-of-criteria" class="pure-form">
+                    <fieldset>
+                        <label for="remember"></label>
+                        <input class="des" id="remember" type="number" placeholder="Number of criteria" min="2" max="10">
+                        <a href="" class="pure-button pure-button-primary" data-action="init-solver" data-context="user">Free user</a>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="solver-step" data-step="2">
+                <p class="no-data-message">No data found</p>
+            </div>
+            <div class="solver-step" data-step="3">
+                <p class="no-data-message">No data found</p>
+            </div>
+            <div class="solver-step" data-step="4">
+                <p class="no-data-message">No data found</p>
+            </div>
+            <div class="solver-step" data-step="5">
+                <p class="no-data-message">No data found</p>
             </div>
         </div>
     </div>

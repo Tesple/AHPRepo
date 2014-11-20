@@ -58,11 +58,11 @@
                         <file>Utils.js</file>
                         <!-- Setup -->
                         <file>Setup.js</file>
-                        <!-- Handlers -->
-                        <file>core/handlers/BasicClickHandlers.js</file>
                         <!-- View Controllers -->
                         <file>core/controllers/AdminViewController.js</file>
                         <file>core/controllers/UserViewController.js</file>
+                        <!-- OTHER -->
+                        <file>core/Authorization.js</file>
                         <!-- INIT -->
                         <file>core/Init.js</file>
                     </jsAggregationFiles>

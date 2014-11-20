@@ -8,6 +8,7 @@ body {
     line-height: 1.7em;
     color: #7f8c8d;
     font-size: 13px;
+    overflow: hidden;
 }
 
 h1,
@@ -99,7 +100,7 @@ a.pure-button-secondary {
     overflow: hidden;
     /* The following styles are required for the "scroll-over" effect */
     width: 100%;
-    height: 100%;
+    height: calc(~"100% - 10px");
     top: 0;
     left: 0;
     position: fixed !important;
@@ -140,6 +141,9 @@ a.pure-button-secondary {
             color: #FFDDDD;
           }
         }
+      }
+      p {
+        color: #FFA192;
       }
 
     }
