@@ -1,3 +1,59 @@
-.options {
+@import "../colors";
 
+.options {
+  #number-of-options {
+    legend {
+      color: rgb(255, 255, 255);
+      font-size: 20px;
+      text-align: center;
+    }
+    margin: 0 auto;
+    width: 306px;
+  }
+
+  #options-bag {
+    fieldset.name-fieldset {
+      background: rgba(255, 255, 255, 0.3);
+      display: inline-block;
+      height: 44px;
+      margin-bottom: 4px;
+      width: calc(~"100% / 3 - 4px");
+      label {
+        color: #FFF;
+      }
+      input.des {
+        width: calc(~"100% - 100px") !important;
+        border: #FFF;
+        padding: 0 6px;
+      }
+    }
+
+    .options-comparison-table-container {
+      legend {
+        font-size: 20px;
+        margin-top: 20px;
+      }
+      table {
+        margin: 0 auto;
+        thead {
+          background: rgba(255, 255, 255, 0.3) !important;
+          color: #FFF;
+          border-bottom: 1px solid @grey;
+          text-align: center;
+        }
+        #options-comparison-matrix tr td{
+          text-align: center;
+          width: 62px;
+          height: 44px;
+          overflow: hidden;
+          select{
+            text-align: center;
+          }
+          &:first-child {
+            background: rgba(255, 255, 255, 0.3);
+          }
+        }
+      }
+    }
+  }
 }
