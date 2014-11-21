@@ -44,26 +44,40 @@
             <i class="fa fa-times pull-right" data-action="close-solver" data-context="user"></i>
         </div>
         <div class="solver-inner">
-            <div class="solver-step" data-step="1">
+            <div class="solver-step criteria" data-step="1">
                 <form id="number-of-criteria" class="pure-form">
                     <fieldset>
-                        <label for="remember"></label>
-                        <input class="des" id="remember" type="number" placeholder="Number of criteria" min="2" max="10">
-                        <a href="" class="pure-button pure-button-primary" data-action="init-solver" data-context="user">Free user</a>
+                        <legend>Number of criteria (2-10)</legend>
+                        <input class="des" id="numOfCriteria" type="number" placeholder="--" min="0" max="10" value="5">
+                        <a class="pure-button pure-button-secondary" data-action="generate-criteria" data-context="user">Accept</a>
                     </fieldset>
                 </form>
+                <div id="criteria-bag"></div>
             </div>
-            <div class="solver-step" data-step="2">
-                <p class="no-data-message">No data found</p>
+            <div class="solver-step options" data-step="2">
+                <form id="number-of-options" class="pure-form">
+                    <fieldset>
+                        <legend>Number of options (2-10)</legend>
+                        <input class="des" id="numOfOptions" type="number" placeholder="--" min="0" max="10" value="5">
+                        <a class="pure-button pure-button-secondary" data-action="generate-options" data-context="user">Accept</a>
+                    </fieldset>
+                </form>
+                <div id="options-bag"></div>
             </div>
-            <div class="solver-step" data-step="3">
-                <p class="no-data-message">No data found</p>
+            <div class="solver-step preview" data-step="3">
+                <p class="exception-message">
+                    <i class='fa fa-exclamation-triangle'></i>Please define and accept criteria and options!
+                </p>
             </div>
-            <div class="solver-step" data-step="4">
-                <p class="no-data-message">No data found</p>
+            <div class="solver-step solve" data-step="4">
+                <p class="exception-message">
+                    <i class='fa fa-exclamation-triangle'></i>Please define and accept criteria and options!
+                </p>
             </div>
-            <div class="solver-step" data-step="5">
-                <p class="no-data-message">No data found</p>
+            <div class="solver-step report" data-step="5">
+                <p class="exception-message">
+                    <i class='fa fa-exclamation-triangle'></i>Please define and accept criteria and options!
+                </p>
             </div>
         </div>
     </div>
