@@ -26,6 +26,7 @@ class app.core.controllers.AdminViewController
           $("#admin-auth").hide( 400, =>
             $("#splash-buttons-bar").show(400)
             $("#auth-spinner").hide()
+            @startAdmin()
           )
       ).fail(
         =>
@@ -35,3 +36,12 @@ class app.core.controllers.AdminViewController
           )
       )
     )
+
+  onUnauthClick: ()=>
+    @killAdmin()
+
+  startAdmin: =>
+    console.warn "Hello Admin! Nice to meet you :)"
+
+  killAdmin: =>
+    console.warn "BANG BANG motherfucker !"
