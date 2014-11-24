@@ -56,6 +56,7 @@
                         <!-- Libs-->
                         <file>jquery.min.js</file>
                         <file>Utils.js</file>
+                        <file>FileSaver.js</file>
                         <!-- Setup -->
                         <file>Setup.js</file>
                         <!-- View Controllers -->
@@ -63,6 +64,7 @@
                         <file>core/controllers/UserViewController.js</file>
                         <!-- OTHER -->
                         <file>core/Authorization.js</file>
+                        <file>core/solver/AHPSolver.js</file>
                         <!-- INIT -->
                         <file>core/Init.js</file>
                     </jsAggregationFiles>

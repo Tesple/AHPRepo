@@ -1,3 +1,31 @@
+@import "../colors";
+
 .preview {
+  #preview-container {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid @silver;
+    height: calc(100% - 50px);
+    overflow: auto;
+
+    pre {
+      padding: 5px;
+      margin: 5px;
+    }
+    .string {
+      color: #70d0ff;
+    }
+    .number {
+      color: #70d0ff;
+    }
+    .boolean {
+      color: blue;
+    }
+    .null {
+      color: magenta;
+    }
+    .key {
+      color: #ffb9b9;
+    }
+  }
 
 }

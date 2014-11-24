@@ -33,7 +33,7 @@
     </div>
     <div class="solver-container">
         <div class="solver-menu">
-            <i class="fa fa-th pull-left"></i>
+            <i class="fa fa-th pull-left" data-action="select-step" data-context="user" data-step="0"></i>
             <nav>
                 <span data-action="select-step" data-context="user" data-step="1">Criteria</span>
                 <span data-action="select-step" data-context="user" data-step="2">Options</span>
@@ -44,6 +44,11 @@
             <i class="fa fa-times pull-right" data-action="close-solver" data-context="user"></i>
         </div>
         <div class="solver-inner">
+            <div class="solver-step report" data-step="0">
+                <p class="exception-message">
+                    <i class='fa fa-exclamation-triangle'></i>Please define and accept criteria and options!
+                </p>
+            </div>
             <div class="solver-step criteria" data-step="1">
                 <form id="number-of-criteria" class="pure-form">
                     <fieldset>
@@ -65,9 +70,11 @@
                 <div id="options-bag"></div>
             </div>
             <div class="solver-step preview" data-step="3">
-                <p class="exception-message">
-                    <i class='fa fa-exclamation-triangle'></i>Please define and accept criteria and options!
-                </p>
+                <div id="preview-container">
+                    <pre>
+                    </pre>
+                </div>
+                <a class='pure-button pure-button-primary stretched' data-action="download-data-file" data-context="user">Download</a>
             </div>
             <div class="solver-step solve" data-step="4">
                 <p class="exception-message">

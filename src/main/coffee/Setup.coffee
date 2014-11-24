@@ -1,6 +1,6 @@
 window.app = {
   core: {
-    handlers: {}
+    solver: {}
     controllers: {}
   }
 }

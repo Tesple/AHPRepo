@@ -35,6 +35,7 @@ class app.core.Init
 
         for handler in handlers
           if (handler? and action = handler[methodName])?
+            console.info "Handling: #{methodName}"
             action(target, event)
           else console.info "#{handler} Couldn't find registered handler for: #{methodName}"
     )
