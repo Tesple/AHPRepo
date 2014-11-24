@@ -12,7 +12,7 @@ class app.core.controllers.UserViewController
     @
 
   onInitSolverClick:=>
-    @n.solverContainer.css("top", 0).addClass("visible").attr("data-selected", "1")
+    @n.solverContainer.css("top", 0).addClass("visible").attr("data-selected", "0")
 
   onCloseSolverClick:=>
     @n.solverContainer.removeAttr("style").removeClass("visible")
