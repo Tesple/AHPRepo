@@ -44,18 +44,30 @@
             <i class="fa fa-times pull-right" data-action="close-solver" data-context="user"></i>
         </div>
         <div class="solver-inner">
-            <div class="solver-step report" data-step="0">
+            <div class="solver-step data" data-step="0">
                 <div id="holder-container">
                     <div id="holder">
                         <p id="holder-description">Drag and drop your AHPSolver data file.</p>
                     </div>
                 </div>
-                <div class="examples">
-                    Select one of our examples
-                </div>
-                OR
-                <div class="examples">
-                    Do it by yourself !
+                <div id="examples-diy-container">
+                    <div id="examples" data-action="toggle-open" data-context="user">
+                        Check examples <i class="fa fa-chevron-down pull-right"></i>
+                        <div class="dropdown">
+                            <ul>
+                                <li>Something goes here</li>
+                                <li>Something goes here</li>
+                                <li>Something goes here</li>
+                                <li>Something goes here</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="or-spacer">
+                        OR
+                    </div>
+                    <a class="pure-button pure-button-empty"data-action="select-step" data-context="user" data-step="1">
+                        Do it by yourself !
+                    </a>
                 </div>
             </div>
             <div class="solver-step criteria" data-step="1">
