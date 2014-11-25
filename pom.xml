@@ -64,6 +64,7 @@
                         <file>core/controllers/UserViewController.js</file>
                         <!-- OTHER -->
                         <file>core/Authorization.js</file>
+                        <file>core/API.js</file>
                         <file>core/solver/AHPSolver.js</file>
                         <!-- INIT -->
                         <file>core/Init.js</file>
