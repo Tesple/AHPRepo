@@ -1,6 +1,6 @@
 class app.core.API
-
-  rootURL: "http://localhost/aphbackend/api/"
+  # IN SOME CASES IT'S BETTER TO USE rootURL: "http://localhost/backend/api/index.php/"
+  rootURL: "http://localhost/backend/api/"
 
   constructor:->
     @
@@ -10,18 +10,16 @@ class app.core.API
       {
         type: 'GET',
         url: @rootURL + "examples",
-        dataType: "json",
-        success: ()=>
+        dataType: "json"
       }
     )
 
-  getExampleNamess:=>
+  getExampleNames:=>
     $.ajax(
       {
         type: 'GET',
         url: @rootURL + "example-names",
-        dataType: "json",
-        success: ()=>
+        dataType: "json"
       }
     )
 
@@ -31,9 +29,7 @@ class app.core.API
       {
         type: 'GET',
         url: @rootURL + "examples/" + id,
-        dataType: "json",
-        success: (data)=> console.warn data
-
+        dataType: "json"
       }
     )
 
@@ -44,9 +40,7 @@ class app.core.API
         contentType: 'application/json',
         url: @rootURL + "examples",
         dataType: "json",
-        data: {name: name, json: json},
-        success: (data, textStatus, jqXHR)=> console.warn data,
-        error:   (jqXHR, textStatus, errorThrown)=> console.warn textStatus
+        data: {name: name, json: json}
       }
     )
 
@@ -57,9 +51,7 @@ class app.core.API
         contentType: 'application/json',
         url: @rootURL + 'examples/' + id,
         dataType: "json",
-        data: {name: name, json: json},
-        success: (data, textStatus, jqXHR)=> console.warn data,
-        error:   (jqXHR, textStatus, errorThrown)=> console.warn textStatus
+        data: {name: name, json: json}
       }
     )
 
@@ -67,8 +59,6 @@ class app.core.API
     $.ajax(
       {
         type: 'DELETE',
-        url: @rootURL + 'examples/' + id,
-        success: (data, textStatus, jqXHR)=> console.warn data,
-        error: (jqXHR, textStatus, errorThrown)=> console.warn textStatus
+        url: @rootURL + 'examples/' + id
       }
     )

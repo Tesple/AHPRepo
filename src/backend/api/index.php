@@ -6,7 +6,7 @@ $app = new Slim();
 
 $app->get('/examples', 'getExamples');
 $app->get('/examples/:id',	'getExample');
-$app->get('/example-names', 'gtExampleNames');
+$app->get('/example-names', 'getExampleNames');
 $app->post('/examples', 'addExample');
 $app->put('/examples/:id', 'updateExample');
 $app->delete('/examples/:id',	'deleteExample');
