@@ -9,10 +9,12 @@ class app.core.controllers.UserViewController
 
   constructor: ->
     @n.solverContainer = $(".solver-container")
+    @api = new app.core.API()
     @
 
   onInitSolverClick:=>
     @n.solverContainer.css("top", 0).addClass("visible").attr("data-selected", "0")
+    @stepHandler(0)
     @plugDragNDropForDataFile()
 
   onCloseSolverClick:=>
@@ -57,6 +59,21 @@ class app.core.controllers.UserViewController
 
   stepHandler: (step)=>
     switch step
+      when 0
+        wGet = @api.getExampleNames()
+        wGet.then(
+          (data)=>
+            bag = $("#examples .dropdown ul", @n.solverContainer)
+            bag.empty()
+            for example in data.example
+              bag.append(
+                """
+                  <li data-id='#{example.id}' data-action='get-example-from-db' data-context='user'>#{example.name}</li>
+                """
+              )
+        ).fail(
+          ()=> alert "Couldn't load examples. Try again later."
+        )
       when 1
         null
         #console.warn "Switched to step #{step}"
@@ -72,11 +89,32 @@ class app.core.controllers.UserViewController
         null
         #console.warn "Switched to step #{step}"
 
+  onGetExampleFromDbClick:(target)=>
+    target.closest("#examples").removeClass("open")
+    id = target.data("id")
+    wGet = @api.getExampleById(id)
+    wGet.then(
+      (data)=>
+        fileString = data.json
+        unless isJSONString(fileString)
+          alert "Only JSON structure is allowed!"
+        else
+          jsonData = JSON.parse(fileString)
+          if @isSimulationDataValid(jsonData)
+            @loadDataFromJson(jsonData)
+          else alert "Invalid data structure!"
+    ).fail(
+      => alert "Couldn't load example from database!"
+    )
+
   onDownloadDataFileClick:=>
     blob = new Blob([JSON.stringify(@p, undefined, "\t")], {type: "text/plain;charset=utf-8"})
     saveAs(blob, "AHPSolver_#{new Date().getTime()}.txt")
 
   onGenerateCriteriaClick: (target)=>
+    @generateCriteria(target)
+
+  generateCriteria: (target, skipCleanUp)=>
     form = target.closest("form")
     number = $("#numOfCriteria", form).val().trim()
     bag = $("#criteria-bag", @n.solverContainer)
@@ -86,8 +124,9 @@ class app.core.controllers.UserViewController
       @generateAndAppendComparisonTable(bag, number,"criteria-comparison-table-container", "criteria-comparison-matrix", "C")
       $accept = $("<a class='pure-button pure-button-primary stretched'>Accept and go to next step</a>")
       bag.append($accept)
-      @clearAllCriteriaData()
-      @clearAllOptionsData()
+      unless skipCleanUp
+        @clearAllCriteriaData()
+        @clearAllOptionsData()
       $("#options-bag", @n.solverContainer).empty()
       @registerElementHandler($accept, "click", @onAcceptCriteriaAndGoToOptionsClick)
       @registerElementHandler($("#criteria-comparison-matrix", bag), "change", @handleMatrixValueChange)
@@ -95,6 +134,9 @@ class app.core.controllers.UserViewController
     )
 
   onGenerateOptionsClick: (target)=>
+    @generateOptions(target)
+
+  generateOptions: (target, skipCleanUp)=>
     bag = $("#options-bag", @n.solverContainer)
     bag.fadeOut(200,=>
       bag.empty()
@@ -109,7 +151,8 @@ class app.core.controllers.UserViewController
           @registerElementHandler($("#options-comparison-matrix-#{crt.id}", bag), "change", @handleMatrixValueChange)
         $accept = $("<a class='pure-button pure-button-primary stretched'>Accept and go to next step</a>")
         bag.append($accept)
-        @clearAllOptionsData()
+        unless skipCleanUp
+          @clearAllOptionsData()
         @registerElementHandler($accept, "click", @onAcceptOptionsAndGoToPreviewClick)
       bag.fadeIn(200)
     )
@@ -171,20 +214,15 @@ class app.core.controllers.UserViewController
 
   onAcceptCriteriaAndGoToOptionsClick:()=>
     @collectDataFromFieldsets(@p.criteria, $("#criteria-bag", @n.solverContainer))
-    console.warn @p.criteria
     @collectDataFromMatrix(@p.criteriaComparisonArray, $("#criteria-comparison-matrix", @n.solverContainer), @p.criteria.length)
-    console.warn @p.criteriaComparisonArray
     @goToStep(2)
 
   onAcceptOptionsAndGoToPreviewClick:()=>
     @collectDataFromFieldsets(@p.options, $("#options-bag", @n.solverContainer))
-    console.warn @p.options
     for ctr, index in @p.criteria
-      console.warn ctr
       @p.optionComparisonArrays[index] = {criteriaId: ctr.id, array:[]}
       array = @p.optionComparisonArrays[index].array
       @collectDataFromMatrix(array, $("#options-comparison-matrix-#{ctr.id}", @n.solverContainer), @p.options.length)
-    console.warn @p.optionComparisonArrays
     @goToStep(3)
 
   handleMatrixValueChange: (event)=>
@@ -240,7 +278,6 @@ class app.core.controllers.UserViewController
 
   isSimulationDataValid: (json)=>
     keys = Object.keys(json)
-    console.warn json
     unless keys.sort().equals(["criteria", "criteriaComparisonArray", "optionComparisonArrays", "options"])
       return false
     unless json.criteria.length is json.optionComparisonArrays.length
@@ -273,4 +310,11 @@ class app.core.controllers.UserViewController
     true
 
   loadDataFromJson: (json)=>
-    console.warn json
+    @p = json
+    $("input#numOfCriteria", @n.solverContainer).val(@p.criteria.length)
+    @generateCriteria($("a[data-action='generate-criteria']"), true)
+    $("input#numOfOptions", @n.solverContainer).val(@p.options.length)
+    @generateOptions($("a[data-action='generate-options']"), true)
+    #TODO: FILL ARRAYS WITH DATA
+    @goToStep(3)
+
