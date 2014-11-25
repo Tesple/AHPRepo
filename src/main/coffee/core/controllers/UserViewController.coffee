@@ -13,9 +13,37 @@ class app.core.controllers.UserViewController
 
   onInitSolverClick:=>
     @n.solverContainer.css("top", 0).addClass("visible").attr("data-selected", "0")
+    @plugDragNDropForDataFile()
 
   onCloseSolverClick:=>
     @n.solverContainer.removeAttr("style").removeClass("visible")
+
+  plugDragNDropForDataFile:=>
+    holder = document.getElementById("holder")
+    holder.ondragover = ->false
+    holder.ondragend  = ->false
+
+    holder.ondrop = (e) =>
+      e.preventDefault()
+      file = e.dataTransfer.files[0]
+      reader = new FileReader()
+      reader.onload = (event) =>
+        if file.type isnt "text/plain" then alert "Only plain text files are allowed!"
+        else
+          fileString = event.target.result
+          unless isJSONString(fileString)
+            alert "Only JSON structure is allowed!"
+          else
+            jsonData = JSON.parse(fileString)
+            if @isSimulationDataValid(jsonData)
+              @loadDataFromJson(jsonData)
+            else alert "Invalid data structure!"
+        return
+      reader.readAsText file
+      false
+
+  onToggleOpenClick: (target)=>
+    target.toggleClass("open")
 
   onSelectStepClick: (target)=>
     step = target.data("step")
@@ -210,4 +238,39 @@ class app.core.controllers.UserViewController
     @p.options = []
     @p.optionComparisonArrays = []
 
-  validateSimulationData: ()=>
+  isSimulationDataValid: (json)=>
+    keys = Object.keys(json)
+    console.warn json
+    unless keys.sort().equals(["criteria", "criteriaComparisonArray", "optionComparisonArrays", "options"])
+      return false
+    unless json.criteria.length is json.optionComparisonArrays.length
+      return false
+    unless json.criteria.length is json.criteriaComparisonArray.length
+      return false
+    for ctr,index in json.criteria
+      if ctr.id isnt "C#{index + 1}" or ctr.name.length is 0
+        return false
+    for opt,index in json.options
+      if opt.id isnt "O#{index + 1}" or opt.name.length is 0
+        return false
+
+    unless @isValidMatrix(json.criteriaComparisonArray, json.criteria.length)
+      return false
+    for OpC, idx in json.optionComparisonArrays
+      if OpC.criteriaId isnt "C#{idx + 1}" or not @isValidMatrix(OpC.array, json.options.length)
+        return false
+    true
+
+  isValidMatrix: (array, size)=>
+    if array.length isnt size
+      return false
+    for row in array
+      if row.length isnt size
+        return false
+      for cell in row
+        if ["1/9","1/7","1/5","1/3","1","3","5","7","9"].indexOf(cell) is -1
+          return false
+    true
+
+  loadDataFromJson: (json)=>
+    console.warn json

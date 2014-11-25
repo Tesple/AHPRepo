@@ -1,19 +1,112 @@
 @import "../colors";
 
-#holder-container {
-    #holder {
-        border: 3px dashed @silver;
-        width: 50%;
-        height: 140px;
-        margin: 10px 25%;
-        cursor: pointer;
+#holder-container, #examples-diy-container {
+  display: inline-block;
+}
 
-        #holder-description {
-            font-size: 26px;
-            line-height: 30px;
-            margin: 34px auto 0;
-            width: 340px;
-            text-align: center;
-        }
+#holder-container {
+  width: 50%;
+    #holder {
+      border: 3px dashed #FFF;
+      width: calc(~"100% - 10px");
+      height: 140px;
+      margin: 0 10px 0 0;
+      cursor: pointer;
+      transition: all .2s linear;
+      &:hover {
+        background-image: none;
+        background: rgba(255, 255, 255, .3);
+      }
+
+      #holder-description {
+        font-size: 26px;
+        line-height: 30px;
+        margin: 34px auto 0;
+        width: 340px;
+        text-align: center;
+      }
     }
+}
+
+#examples-diy-container {
+  width: calc(~"50% - 6px");
+  text-align: center;
+  height: 140px;
+  vertical-align: bottom;
+
+  #examples {
+    min-width: 260px;
+    width: 50%;
+    height: 46px;
+    border: 2px solid #FFF;
+    margin: 0 auto;
+    position: relative;
+    font-size: 20px;
+    line-height: 42px;
+    transition: all .2s linear;
+    cursor: pointer;
+    &:hover {
+      background: rgba(255, 255, 255, .3);
+    }
+    &.open {
+      //background-image: none;
+      //background: rgba(255, 255, 255, .3);
+      background: #FFF;
+      color: @nice-blue;
+      .dropdown {
+        height: 96px;
+      }
+    }
+    i {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      opacity: 1;
+    }
+
+    .dropdown {
+      transition: height .2s linear;
+      background: #FFF;
+      height: 0;
+      left: -2px;
+      position: absolute;
+      right: -1px;
+      z-index: 34;
+      overflow: auto;
+
+      ul {
+        font-size: 16px;
+        line-height: 20px;
+        list-style: outside none none;
+        margin: 0;
+        padding: 8px;
+        text-align: left;
+        li {
+          padding: 4px;
+          border: 2px solid transparent;
+          transition: border .2s linear;
+          margin: 2px;
+          &:hover {
+            cursor: pointer;
+            border: 2px solid @nice-blue;
+          }
+        }
+      }
+    }
+  }
+  .or-spacer {
+    font-size: 22px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  a {
+    min-width: 260px;
+    width: 50%;
+    transition: all .2s linear;
+    &:hover {
+      background-image: none;
+      background: rgba(255, 255, 255, .3);
+    }
+  }
 }
