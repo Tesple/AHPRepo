@@ -9,110 +9,67 @@ class app.core.controllers.UserViewController
 
   constructor: ->
     @n.solverContainer = $(".solver-container")
-    @api = new app.core.API()
+    @click  = new app.core.handlers.ClickHandlers(@n.solverContainer, @)
+    @dnd    = new app.core.handlers.DragNDrop(@)
+    @dh     = new app.core.helpers.DataHelper(@n.solverContainer, @)
+    @solver = new app.core.solver.AHPSolver(@)
+    @api    = new app.core.API()
     @
 
   onInitSolverClick:=>
-    @n.solverContainer.css("top", 0).addClass("visible").attr("data-selected", "0")
-    @stepHandler(0)
-    @plugDragNDropForDataFile()
+    @click.initSolver()
+    @dnd.init()
 
-  onCloseSolverClick:=>
-    @n.solverContainer.removeAttr("style").removeClass("visible")
-
-  plugDragNDropForDataFile:=>
-    holder = document.getElementById("holder")
-    holder.ondragover = ->false
-    holder.ondragend  = ->false
-
-    holder.ondrop = (e) =>
-      e.preventDefault()
-      file = e.dataTransfer.files[0]
-      reader = new FileReader()
-      reader.onload = (event) =>
-        if file.type isnt "text/plain" then alert "Only plain text files are allowed!"
-        else
-          fileString = event.target.result
-          unless isJSONString(fileString)
-            alert "Only JSON structure is allowed!"
-          else
-            jsonData = JSON.parse(fileString)
-            if @isSimulationDataValid(jsonData)
-              @loadDataFromJson(jsonData)
-            else alert "Invalid data structure!"
-        return
-      reader.readAsText file
-      false
-
-  onToggleOpenClick: (target)=>
-    target.toggleClass("open")
+  onCloseSolverClick:=> @click.closeSolver()
 
   onSelectStepClick: (target)=>
     step = target.data("step")
-    selectedStep = @n.solverContainer.attr("data-selected")
-    console.warn selectedStep
-    $(".solver-step[data-step='#{selectedStep}']",@n.solverContainer).fadeOut(250,
-      => @n.solverContainer.attr("data-selected", step).find(".solver-step[data-step='#{step}']").fadeIn(250)
-    )
-    #@n.solverContainer.attr("data-selected", step);
+    @click.selectStep(target, step)
     @stepHandler(step)
+
+  onToggleOpenClick:       (target)=> @click.toggleOpen(target)
+
+  onGetExampleFromDbClick: (target)=> @click.getExampleFromDb(target)
+
+  onDownloadDataFileClick:=>          @click.downloadDataFile()
+
+  onGenerateCriteriaClick: (target)=> @generateCriteria(target)
+
+  onStartAhpSolverClick:   (target)=>
+    cCI = $("#critConsIdx", @n.solverContainer).val().trim()
+    oCI = $("#critConsIdx", @n.solverContainer).val().trim()
+    unless isNumber(oCI) and isNumber(cCI) and inScope(oCI) and inScope(cCI)
+      alert("Invalid criteria consistency index and/or options consistency index!")
+    else
+      @solver.startAhpSolver(cCI, oCI)
+
+  onAcceptCriteriaAndGoToOptionsClick:()=>
+    @dh.collectDataFromFieldsets(@p.criteria, $("#criteria-bag", @n.solverContainer))
+    @dh.collectDataFromMatrix(@p.criteriaComparisonArray, $("#criteria-comparison-matrix", @n.solverContainer), @p.criteria.length)
+    @goToStep(2)
+
+  onAcceptOptionsAndGoToPreviewClick:()=>
+    @dh.collectDataFromFieldsets(@p.options, $("#options-bag", @n.solverContainer))
+    for ctr, index in @p.criteria
+      @p.optionComparisonArrays[index] = {criteriaId: ctr.id, array:[]}
+      array = @p.optionComparisonArrays[index].array
+      @dh.collectDataFromMatrix(array, $("#options-comparison-matrix-#{ctr.id}", @n.solverContainer), @p.options.length)
+    @goToStep(3)
 
   stepHandler: (step)=>
     switch step
-      when 0
-        wGet = @api.getExampleNames()
-        wGet.then(
-          (data)=>
-            bag = $("#examples .dropdown ul", @n.solverContainer)
-            bag.empty()
-            for example in data.example
-              bag.append(
-                """
-                  <li data-id='#{example.id}' data-action='get-example-from-db' data-context='user'>#{example.name}</li>
-                """
-              )
-        ).fail(
-          ()=> alert "Couldn't load examples. Try again later."
-        )
-      when 1
-        null
-        #console.warn "Switched to step #{step}"
-      when 2
-        null
-        #console.warn "Switched to step #{step}"
-      when 3
-        $("#preview-container pre", @n.solverContainer).html(syntaxHighlight(@p))
-      when 4
-        null
-        #console.warn "Switched to step #{step}"
-      when 5
-        null
-        #console.warn "Switched to step #{step}"
+      when 0 then @dh.getExampleNamesAndAppendOptions()
+      when 3 then @dh.printJSON()
+      when 4 then @prepareSolver()
 
-  onGetExampleFromDbClick:(target)=>
-    target.closest("#examples").removeClass("open")
-    id = target.data("id")
-    wGet = @api.getExampleById(id)
-    wGet.then(
-      (data)=>
-        fileString = data.json
-        unless isJSONString(fileString)
-          alert "Only JSON structure is allowed!"
-        else
-          jsonData = JSON.parse(fileString)
-          if @isSimulationDataValid(jsonData)
-            @loadDataFromJson(jsonData)
-          else alert "Invalid data structure!"
-    ).fail(
-      => alert "Couldn't load example from database!"
-    )
+  prepareSolver: ()=>
+    unless @isSimulationDataValid(@p)
+      $(".solver #solver-bag, .solver #solver-options", @n.solverContainer).hide()
+      $(".solver .exception-message", @n.solverContainer).show()
+    else
+      $(".solver #solver-bag, .solver #solver-options", @n.solverContainer).show()
+      $(".solver .exception-message", @n.solverContainer).hide()
 
-  onDownloadDataFileClick:=>
-    blob = new Blob([JSON.stringify(@p, undefined, "\t")], {type: "text/plain;charset=utf-8"})
-    saveAs(blob, "AHPSolver_#{new Date().getTime()}.txt")
-
-  onGenerateCriteriaClick: (target)=>
-    @generateCriteria(target)
 
   generateCriteria: (target, skipCleanUp)=>
     form = target.closest("form")
@@ -158,72 +115,13 @@ class app.core.controllers.UserViewController
     )
 
   generateAndAppendFieldsets:(bag, number, symbol)=>
-    i = 1
-    while i <= number
-      bag.append(
-                """
-          <fieldset class='name-fieldset'>
-            <label>#{symbol + i} name:</label>
-            <input class='des pull-right' type='text' placeholder='#{symbol + i}' data-id='#{symbol + i}'>
-          </fieldset>
-        """
-      )
-      i++
+    @dh.generateAndAppendFieldsets(bag, number, symbol)
 
   generateAndAppendComparisonTable: (bag, number, tcClass, matrixId, symbol, legend)=>
-    tableContainer = $("<div class='#{tcClass}'></div>")
-    if legend?
-      tableContainer.append("<legend>#{legend}</legend>")
-    table = $("<table class='pure-table pure-table-bordered'></table>")
-    thead = $("<thead><tr><th>#</th></tr>")
-    tbody = $("<tbody id='#{matrixId}'></tbody>")
-    selectTemplate = """
-      <select><option>1/9</option><option>1/7</option><option>1/5</option><option>1/3</option>
-      <option selected='selected'>1</option><option>3</option><option>5</option><option>7</option><option>9</option></select>
-    """
-
-    i = 1
-    j = 0
-
-    while i <= number
-      $("tr", thead).append("<th>#{symbol + i}</th>")
-      j = 0
-      currentRow = $("<tr></tr>")
-      while j <=number
-        cell =
-          if j is 0
-            "<td data-i='#{i}' data-j='#{j}'>#{symbol + i}</td>"
-          else if i is j
-            "<td data-i='#{i}' data-j='#{j}'> 1 </td>"
-          else if i < j
-            "<td data-i='#{i}' data-j='#{j}'>#{selectTemplate}</td>"
-          else "<td data-i='#{i}' data-j='#{j}'>1</td>"
-        currentRow.append(cell)
-        j++
-        null
-      tbody.append(currentRow)
-      i++
-
-    table.append(thead, tbody)
-    tableContainer.append(table)
-
-    bag.append(tableContainer)
+    @dh.generateAndAppendComparisonTable(bag, number, tcClass, matrixId, symbol, legend)
 
   registerElementHandler: (element, event, callback)=>
     $(element).on(event,callback)
-
-  onAcceptCriteriaAndGoToOptionsClick:()=>
-    @collectDataFromFieldsets(@p.criteria, $("#criteria-bag", @n.solverContainer))
-    @collectDataFromMatrix(@p.criteriaComparisonArray, $("#criteria-comparison-matrix", @n.solverContainer), @p.criteria.length)
-    @goToStep(2)
-
-  onAcceptOptionsAndGoToPreviewClick:()=>
-    @collectDataFromFieldsets(@p.options, $("#options-bag", @n.solverContainer))
-    for ctr, index in @p.criteria
-      @p.optionComparisonArrays[index] = {criteriaId: ctr.id, array:[]}
-      array = @p.optionComparisonArrays[index].array
-      @collectDataFromMatrix(array, $("#options-comparison-matrix-#{ctr.id}", @n.solverContainer), @p.options.length)
-    @goToStep(3)
 
   handleMatrixValueChange: (event)=>
     target = $(event.target)
@@ -235,86 +133,38 @@ class app.core.controllers.UserViewController
     matrix = target.closest("tbody")
     $("td[data-i='#{dataJ}'][data-j='#{dataI}']", matrix).text(opposite)
 
-
-  collectDataFromFieldsets: (array, bag)=>
-    array.length = 0
-    inputs = $("fieldset input", bag)
-    for input in inputs
-      id = $(input).data("id")
-      value = $(input).val().trim()
-      array.push({
-        id: id
-        name: (if value.length > 0 then value else id)
-      })
-
-  collectDataFromMatrix: (array, matrix, size)=>
-    array.length = 0
-    i = 1
-    j = 1
-    while i <= size
-      array[i - 1] = []
-      j = 1
-      while j <= size
-        element = $("td[data-i='#{i}'][data-j='#{j}']", matrix)
-        if element.has("select").length is 0
-          array[i - 1][j - 1] = element.text().trim()
-        else
-          array[i - 1][j - 1] = $("select", element).val().trim()
-        j++
-      i++
-    null
-
-
   goToStep: (number)=>
     $("[data-step='#{number}'][data-action='select-step']", @n.solverContainer).trigger("click")
 
   clearAllCriteriaData: ()=>
     @p.criteria = []
     @p.criteriaComparisonArray = []
+    $(".solver #solver-bag", @n.solverContainer).empty()
 
   clearAllOptionsData: ()=>
     @p.options = []
     @p.optionComparisonArrays = []
+    $(".solver #solver-bag", @n.solverContainer).empty()
 
   isSimulationDataValid: (json)=>
-    keys = Object.keys(json)
-    unless keys.sort().equals(["criteria", "criteriaComparisonArray", "optionComparisonArrays", "options"])
-      return false
-    unless json.criteria.length is json.optionComparisonArrays.length
-      return false
-    unless json.criteria.length is json.criteriaComparisonArray.length
-      return false
-    for ctr,index in json.criteria
-      if ctr.id isnt "C#{index + 1}" or ctr.name.length is 0
-        return false
-    for opt,index in json.options
-      if opt.id isnt "O#{index + 1}" or opt.name.length is 0
-        return false
-
-    unless @isValidMatrix(json.criteriaComparisonArray, json.criteria.length)
-      return false
-    for OpC, idx in json.optionComparisonArrays
-      if OpC.criteriaId isnt "C#{idx + 1}" or not @isValidMatrix(OpC.array, json.options.length)
-        return false
-    true
-
-  isValidMatrix: (array, size)=>
-    if array.length isnt size
-      return false
-    for row in array
-      if row.length isnt size
-        return false
-      for cell in row
-        if ["1/9","1/7","1/5","1/3","1","3","5","7","9"].indexOf(cell) is -1
-          return false
-    true
+    @dh.isSimulationDataValid(json)
 
   loadDataFromJson: (json)=>
     @p = json
     $("input#numOfCriteria", @n.solverContainer).val(@p.criteria.length)
-    @generateCriteria($("a[data-action='generate-criteria']"), true)
-    $("input#numOfOptions", @n.solverContainer).val(@p.options.length)
-    @generateOptions($("a[data-action='generate-options']"), true)
-    #TODO: FILL ARRAYS WITH DATA
-    @goToStep(3)
+    $("input#numOfOptions",  @n.solverContainer).val(@p.options.length)
+    $.when(
+      @generateCriteria($("a[data-action='generate-criteria']"), true),
+      @generateOptions($("a[data-action='generate-options']"), true)
+    ).then(
+      =>
+        crtBag = $("#criteria-bag", @n.solverContainer)
+        optBag = $("#options-bag", @n.solverContainer)
+        @dh.fillFieldsetsWithData(crtBag, @p.criteria)
+        @dh.fillFieldsetsWithData(optBag, @p.options)
+        @dh.fillMatrixWithData($("#criteria-comparison-matrix", crtBag), @p.criteriaComparisonArray)
+        for element in @p.optionComparisonArrays
+          @dh.fillMatrixWithData($("#options-comparison-matrix-#{element.criteriaId}", optBag), element.array)
+    )
+    @goToStep(4)
 

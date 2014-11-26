@@ -62,7 +62,12 @@
                         <!-- View Controllers -->
                         <file>core/controllers/AdminViewController.js</file>
                         <file>core/controllers/UserViewController.js</file>
-                        <!-- OTHER -->
+                        <!-- Handlers -->
+                        <file>core/handlers/ClickHandlers.js</file>
+                        <file>core/handlers/DragNDrop.js</file>
+                        <!-- Helpers-->
+                        <file>core/helpers/DataHelper.js</file>
+                        <!-- Other -->
                         <file>core/Authorization.js</file>
                         <file>core/API.js</file>
                         <file>core/solver/AHPSolver.js</file>
