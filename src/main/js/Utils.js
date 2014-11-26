@@ -56,3 +56,15 @@ Array.prototype.equals = function (array) {
     }
     return true;
 }
+
+
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function inScope(n) {
+    var num = parseFloat(n)
+    return num > 0 && num <= 100;
+}
+
