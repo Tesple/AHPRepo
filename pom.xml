@@ -57,6 +57,8 @@
                         <file>jquery.min.js</file>
                         <file>Utils.js</file>
                         <file>FileSaver.js</file>
+                        <file>md5.js</file>
+                        <file>bPopup.js</file>
                         <!-- Setup -->
                         <file>Setup.js</file>
                         <!-- View Controllers -->
