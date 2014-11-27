@@ -8,12 +8,14 @@ class app.core.controllers.UserViewController
   }
 
   constructor: ->
+    window.uvc = @
     @n.solverContainer = $(".solver-container")
     @click  = new app.core.handlers.ClickHandlers(@n.solverContainer, @)
     @dnd    = new app.core.handlers.DragNDrop(@)
     @dh     = new app.core.helpers.DataHelper(@n.solverContainer, @)
     @solver = new app.core.solver.AHPSolver(@)
     @api    = new app.core.API()
+    window.api = @api
     @
 
   onInitSolverClick:=>

@@ -28,8 +28,8 @@ class app.core.solver.AHPSolver
   startAhpSolver: (cCI, oCI)=>
     $(".solver #solver-bag", @node).empty()
     @clearData()
-    @CCI = cCI
-    @OCI = oCI
+    @CCI = cCI / 100
+    @OCI = oCI / 100
     @numberizeAndNormalizeData()
     @calculateVariants()
     @sortRanking()

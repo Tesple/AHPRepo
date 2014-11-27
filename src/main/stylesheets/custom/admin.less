@@ -1,0 +1,192 @@
+@import "../colors";
+#admin-tools {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100000;
+  display: none;
+  opacity: 0;
+  transition: opacity .2s linear;
+  &.visible {
+    display: block;
+    opacity: 1;
+  }
+  .content {
+    background: none repeat scroll 0 0 #fff;
+    height: 300px;
+    left: calc(~"50% - 200px");
+    position: absolute;
+    top: calc(~"50% - 150px");
+    width: 400px;
+    z-index: 1000000;
+
+    a {
+      cursor: pointer;
+      display: block;
+      margin: 80px 150px 0;
+    }
+
+    #save, #update, #delete {
+      cursor: pointer;
+      font-size: 20px;
+      height: 46px;
+      line-height: 42px;
+      margin: 10px;
+      padding: 0 4px;
+      position: relative;
+      transition: all 0.2s linear 0s;
+      i {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        opacity: 1;
+      }
+
+      .dropdown {
+        transition: height .2s linear;
+        height: 0;
+        position: absolute;
+        z-index: 34;
+        overflow: auto;
+        left: 0;
+        right: 0;
+
+        ul {
+          font-size: 16px;
+          line-height: 20px;
+          list-style: outside none none;
+          margin: 0;
+          padding: 8px;
+          text-align: left;
+          li {
+            padding: 4px;
+            border: 2px solid transparent;
+            transition: border .2s linear;
+            margin: 2px;
+            &:hover {
+              cursor: pointer;
+              border: 2px solid @nice-blue;
+            }
+          }
+        }
+      }
+    }
+    #save {
+      border: 2px solid #BBB;
+      #save-as-name {
+        border: 0;
+        border-right: 2px solid #DDD;
+        font-size: 20px;
+        height: 36px;
+        padding: 0 4px;
+        position: relative;
+        width: 300px !important;
+      }
+      .fa {
+        transition: color .2s linear;
+        &:hover {
+          color: @green;
+        }
+      }
+    }
+
+    #update {
+      background: @nice-blue;
+      color: #FFF;
+      &.open {
+        .dropdown {
+          height: 160px;
+        }
+      }
+      .dropdown {
+        background: @nice-blue;
+        z-index: 36 !important;
+        li {
+          padding: 6px;
+          transition: all .2s linear !important;
+          margin: 2px;
+          border: none !important;
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 100%;
+          padding-right: 20px !important;
+          &:hover {
+            color: @nice-blue;
+            background: #FFF;
+            cursor: pointer;
+            border: none !important;
+            &:after {
+              color: @nice-blue;
+              content: "\f101";
+              font-family: fontawesome;
+              position: absolute;
+              right: 16px;
+            }
+          }
+        }
+      }
+    }
+
+    #delete {
+      background: @nice-red;
+      color: #FFF;
+      &.open {
+        .dropdown {
+          height: 104px;
+        }
+      }
+      .dropdown {
+        background: @nice-red;
+        li {
+          padding: 6px;
+          transition: all .2s linear !important;
+          margin: 2px;
+          border: none !important;
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 100%;
+          padding-right: 20px !important;
+          &:hover {
+            color: @nice-red;
+            background: #FFF;
+            cursor: pointer;
+            border: none !important;
+            &:after {
+              color: @nice-red;
+              content: "\f05e";
+              font-family: fontawesome;
+              position: absolute;
+              right: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#loader-layer {
+  background: none repeat scroll 0 0 rgb(255, 255, 255);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  z-index: 36;
+  .spinner {
+    margin: 100px auto !important;
+    background-color: #000 !important;
+  }
+  p {
+    text-align: center;
+    color: #000;
+    margin-top: -40px;
+  }
+}

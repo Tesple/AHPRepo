@@ -42,42 +42,48 @@ function getExample($id) {
 }
 
 function addExample() {
-	error_log('addExample\n', 3, '/var/tmp/php.log');
 	$request = Slim::getInstance()->request();
-	$example = json_decode($request->getBody());
+    $body = $request->getBody();
+    $body = json_decode($body);
+    $example = $body->example;
+
 	$sql = "INSERT INTO examples (name, json) VALUES (:name, :json)";
 	try {
+	    $json = json_encode($example->json);
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("name", $example->name);
-		$stmt->bindParam("json", $example->json);
+		$stmt->bindParam("json", $json);
 		$stmt->execute();
 		$example->id = $db->lastInsertId();
 		$db = null;
 		echo json_encode($example);
 	} catch(PDOException $e) {
-		error_log($e->getMessage(), 3, '/var/tmp/php.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
 function updateExample($id) {
-	$request = Slim::getInstance()->request();
-	$body = $request->getBody();
-	$example = json_decode($body);
-	$sql = "UPDATE examples SET name=:name, json=:json WHERE id=:id";
-	try {
-		$db = getConnection();
-		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("name", $example->name);
-		$stmt->bindParam("json", $example->json);
-		$stmt->bindParam("id", $id);
-		$stmt->execute();
-		$db = null;
-		echo json_encode($example);
-	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
-	}
+    $request = Slim::getInstance()->request();
+    $body = $request->getBody();
+    $body = json_decode($body);
+    $example = $body->example;
+
+    $sql = "UPDATE examples SET name=:name, json=:json WHERE id=:id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array(
+            ":name" => $example->name,
+            ":json" => json_encode($example->json),
+            ":id" => $id
+        ));
+        $db = null;
+        echo json_encode($example);
+
+    } catch (PDOException $e) {
+        echo '{"error":{"text": '. $e->getMessage() .'}}';
+    }
 }
 
 function deleteExample($id) {

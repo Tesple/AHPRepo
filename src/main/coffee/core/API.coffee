@@ -34,24 +34,27 @@ class app.core.API
     )
 
   addExample: (name, json)=>
+    alert name
+    data = @stringify({name: name, json: json})
     $.ajax(
       {
         type: 'POST',
         contentType: 'application/json',
         url: @rootURL + "examples",
         dataType: "json",
-        data: {name: name, json: json}
+        data: data
       }
     )
 
   updateExample: (id, name, json)=>
+    data = @stringify({name: name, json: json})
     $.ajax(
       {
         type: 'PUT',
         contentType: 'application/json',
         url: @rootURL + 'examples/' + id,
         dataType: "json",
-        data: {name: name, json: json}
+        data: data
       }
     )
 
@@ -62,3 +65,8 @@ class app.core.API
         url: @rootURL + 'examples/' + id
       }
     )
+
+  stringify: (json)=>
+    example = {example: json}
+    console.warn example
+    JSON.stringify(example)

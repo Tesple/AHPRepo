@@ -18,8 +18,8 @@
             </p>
             <form id="admin-auth" class="pure-form">
                 <fieldset>
-                    <input type="text" placeholder="Login">
-                    <input type="password" placeholder="Password">
+                    <input id="login" type="text" placeholder="Login">
+                    <input id="password" type="password" placeholder="Password">
                     <i class="fa fa-check-circle-o" data-action="auth" data-context="admin"></i>
                     <i class="fa fa-times-circle-o" data-action="cancel-auth" data-context="admin"></i>
                 </fieldset>
@@ -41,7 +41,10 @@
                 <span data-action="select-step" data-context="user" data-step="4">Solver</span>
             </nav>
             <i class="fa fa-times pull-right" data-action="close-solver" data-context="user"></i>
-            <i class="fa fa-user pull-right"></i>
+            <span id="admin-icons">
+                <i class="fa fa-sign-out pull-right" data-action="close-solver" data-context="user,admin"></i>
+                <i class="fa fa-user pull-right" data-action="toggle-admin-tools" data-context="admin"></i>
+            </span>
         </div>
         <div class="solver-inner">
             <div class="solver-step data" data-step="0">
@@ -108,6 +111,44 @@
                 </form>
                 <div id="solver-bag">
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="admin-tools">
+        <div class="content">
+            <div id="save">
+                <input type="text" placeholder="Save example" id="save-as-name" class="des">
+                <i class="fa fa-save pull-right" data-action="saveAs" data-context="admin"></i>
+            </div>
+            <div id="update" data-action="toggle-open" data-context="user">
+                Update example <i class="fa fa-chevron-down pull-right"></i>
+                <div class="dropdown">
+                    <ul>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="delete" data-action="toggle-open" data-context="user">
+                Delete example <i class="fa fa-chevron-down pull-right"></i>
+                <div class="dropdown">
+                    <ul>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                        <li> Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden Jeden</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a data-action="toggle-admin-tools" data-context="admin"> CLOSE </a>
+            <div id="loader-layer">
+                <div class="spinner"></div>
+                <p>LOADING</p>
             </div>
         </div>
     </div>

@@ -8,7 +8,6 @@ class app.core.Init
     window.controllers = @controllers
     @controllers.user  = new app.core.controllers.UserViewController()
     @controllers.admin = new app.core.controllers.AdminViewController()
-    @controllers.user.onInitSolverClick()
 
     @initDataActionHandlers()
 
