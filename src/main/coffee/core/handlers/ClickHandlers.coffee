@@ -40,5 +40,5 @@ class app.core.handlers.ClickHandlers
     )
 
   downloadDataFile: ()=>
-    blob = new Blob([JSON.stringify(@p, undefined, "\t")], {type: "text/plain;charset=utf-8"})
+    blob = new Blob([JSON.stringify(@vc.p, undefined, "\t")], {type: "text/plain;charset=utf-8"})
     saveAs(blob, "AHPSolver_#{new Date().getTime()}.txt")
